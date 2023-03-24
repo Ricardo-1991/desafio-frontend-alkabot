@@ -16,7 +16,7 @@ function App() {
   const [posts, setPosts] = useState<Posts[]>([]);
 
   useEffect(() => {
-    api.get("posts").then((response) => setPosts(response.data));
+    api.get(`posts`).then((response) => setPosts(response.data));
   }, []);
 
   return (
@@ -26,7 +26,8 @@ function App() {
         {posts.map((post) => (
           <Posts
             key={post.id}
-            authorId={post.userId}
+            postId={post.id}
+            userId={post.userId}
             title={post.title}
             content={post.body}
           />

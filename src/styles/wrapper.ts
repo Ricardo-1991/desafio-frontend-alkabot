@@ -8,4 +8,11 @@ export const Wrapper = styled.div`
   display: grid;
   gap: 2rem;
   align-items: flex-start;
+
+  @media (max-width: 768px) {
+  html {
+    font-size: 87.5%;
+  }
+}
 `
+
