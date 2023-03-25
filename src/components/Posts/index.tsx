@@ -19,38 +19,17 @@ interface Comments {
 
 interface User {
   name: string;
-  // id: number;
-  // username: string;
-  // email: string;
-  // address: {
-  //   street: string;
-  //   suite: string;
-  //   city: string;
-  //   zipcode: string;
-  //   geo: {
-  //     lat: string;
-  //     lng: string;
-  //   };
-  // };
-  // phone: string;
-  // website: string;
-  // company: {
-  //   name: string;
-  //   catchPhrase: string;
-  //   bs: string;
-  // };
+  id: number;
 }
 
 export function Posts({ userId, title, content, postId }: Posts) {
   const [comments, setComments] = useState<Comments[]>([]);
-  const [user, setUser] = useState<User>({
-    name: "",
-  });
+  const [users, setUsers] = useState<User[]>([]);
   const [showComments, setShowComments] = useState(false);
 
   useEffect(() => {
-    api.get(`users/${userId}`).then((response) => {
-      setUser(response.data);
+    api.get(`users`).then((response) => {
+      setUsers(response.data);
     });
   }, []);
 
@@ -65,11 +44,15 @@ export function Posts({ userId, title, content, postId }: Posts) {
     setShowComments(false);
   }
 
+  //Spinner enquanto undefined
+  const userName = users.filter((user) => user.id === userId)[0]?.name;
+  console.log(userName);
+
   return (
     <Container>
       <header>
         <div>
-          <p>{user.name}</p>
+          <p>{userName}</p>
           <p>{title}</p>
         </div>
       </header>
