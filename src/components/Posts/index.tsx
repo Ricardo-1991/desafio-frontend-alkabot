@@ -44,7 +44,6 @@ export function Posts({ userId, title, content, postId }: Posts) {
     setShowComments(false);
   }
 
-  //Spinner enquanto undefined
   const userName = users.filter((user) => user.id === userId)[0]?.name;
 
   return (

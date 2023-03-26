@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { GlobalStyle } from "./styles/global";
+import { LoadingContainer } from "./styles/LoadingContainer";
+import { api } from "./services/api";
 import { Header } from "./components/Header/index";
 import { Posts } from "./components/Posts/index";
 import { Wrapper } from "./styles/wrapper";
-import { api } from "./services/api";
+import spinnerLoading from "./assets/spinner.svg";
 
 interface Posts {
   id: number;
@@ -14,34 +16,26 @@ interface Posts {
 
 function App() {
   const [posts, setPosts] = useState<Posts[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(10);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    api
-      .get(`/posts?_page=${currentPage}&_limit=10`)
-      .then((response) => setPosts(response.data));
+    api.get(`posts`).then((response) => setPosts(response.data));
   }, []);
 
-  useEffect(() => {
-    if (currentPage === 1) {
-      return;
-    }
-    setLoading(true);
-    api
-      .get(`/posts?_page=${currentPage}&_limit=10`)
-      .then((response) => setPosts((prev) => [...prev, ...response.data]));
-  }, [currentPage]);
-
   function handlePost() {
-    setCurrentPage((prev) => prev + 1);
+    setLoading(true);
+    setTimeout(() => {
+      setCurrentPage((prev) => prev + 10);
+      setLoading(false);
+    }, 1000);
   }
 
   return (
     <>
       <Header />
       <Wrapper>
-        {posts.map((post) => (
+        {posts.slice(0, currentPage).map((post) => (
           <Posts
             key={post.id}
             postId={post.id}
@@ -50,8 +44,13 @@ function App() {
             content={post.body}
           />
         ))}
-        <button onClick={handlePost}>Carregar mais posts</button>
-        {/* {loading && <p>Loading...</p>} */}
+        <LoadingContainer>
+          {loading ? (
+            <img src={spinnerLoading} alt="" />
+          ) : (
+            <button onClick={handlePost}>Carregar novas postagens</button>
+          )}
+        </LoadingContainer>
       </Wrapper>
       <GlobalStyle />
     </>

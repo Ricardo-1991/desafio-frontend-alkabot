@@ -43,5 +43,4 @@ button {
   font-weight: 400;
   font-size: 1rem;
 }
-
 `
