@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
+
 export const GlobalStyle = createGlobalStyle`
 :root {
   --white: #ffffff;
@@ -13,8 +14,6 @@ export const GlobalStyle = createGlobalStyle`
 
   --green-300: #00b37e;
   --green-500: #00875f;
-
-  --red-500: #f75a68;
 }
 
 :focus {
@@ -29,7 +28,7 @@ export const GlobalStyle = createGlobalStyle`
 }
 
 body {
-  background-color: var(--gray-900);
+  background-image: url("src/assets/blog_background.jpg"); 
   color: var(--gray-300);
   -webkit-font-smoothing: antialiased;
 }
@@ -38,7 +37,6 @@ body,
 input,
 textarea,
 button {
-  // input, TextArea e Button não herdam por padrão as config de css do Body;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 1rem;

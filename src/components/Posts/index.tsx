@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
-import { Container } from "./style";
+import { Comments } from "../Comments/index";
+import { Loader } from "../layout/Loader";
+import { Avatar } from "../layout/Avatar/index";
+import { AuthorInfo, Container, Content } from "./style";
+import { User } from "@phosphor-icons/react";
 
 interface Posts {
   postId: number;
@@ -33,11 +37,14 @@ export function Posts({ userId, title, content, postId }: Posts) {
     });
   }, []);
 
-  function handleShowComment(postId: number) {
+  useEffect(() => {
     api.get(`posts/${postId}/comments`).then((response) => {
       setComments(response.data);
-      setShowComments(true);
     });
+  }, []);
+
+  function handleShowComment() {
+    setShowComments(true);
   }
 
   function handleHideComments() {
@@ -45,33 +52,38 @@ export function Posts({ userId, title, content, postId }: Posts) {
   }
 
   const userName = users.filter((user) => user.id === userId)[0]?.name;
-
+  const commentsSize = comments.length;
   return (
     <Container>
       <header>
-        <div>
-          <p>{userName}</p>
-          <p>{title}</p>
-        </div>
+        <AuthorInfo>
+          <Avatar hasBorder={true} />
+          <div>
+            <strong>{userName ? userName : <Loader />}</strong>
+            <span>Usuário do Blog</span>
+          </div>
+        </AuthorInfo>
       </header>
-      <div onClick={() => handleShowComment(postId)}>
+      <Content>
+        <strong>{title}</strong>
         <p>{content}</p>
-      </div>
-      {showComments && (
-        <div>
-          <br />
-          <br />
-          <h3>Comentários</h3>
-          <ul>
-            {comments.map((comment) => (
-              <li key={comment.id}>
-                <h4>{comment.name}</h4>
-                <p>{comment.body}</p>
-              </li>
-            ))}
-          </ul>
-          <button onClick={handleHideComments}>Fechar Comentários</button>
-        </div>
+      </Content>
+      {showComments &&
+        comments.map((comment) => (
+          <Comments
+            key={comment.id}
+            id={comment.id}
+            name={comment.name}
+            email={comment.email}
+            content={comment.body}
+          />
+        ))}
+      {showComments ? (
+        <button onClick={handleHideComments}>Fechar Comentários</button>
+      ) : (
+        <button onClick={handleShowComment}>
+          Ver todos os {commentsSize} comentários
+        </button>
       )}
     </Container>
   );

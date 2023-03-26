@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const LoadingContainer = styled.div`
+export const FooterContainer = styled.div`
     width: 30%;
     margin: 0 auto;
     

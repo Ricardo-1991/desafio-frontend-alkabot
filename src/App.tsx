@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { GlobalStyle } from "./styles/global";
-import { LoadingContainer } from "./styles/LoadingContainer";
+import { Loader } from "./components/layout/Loader/index";
+import { FooterContainer } from "./styles/FooterContainer";
 import { api } from "./services/api";
 import { Header } from "./components/Header/index";
 import { Posts } from "./components/Posts/index";
 import { Wrapper } from "./styles/wrapper";
-import spinnerLoading from "./assets/spinner.svg";
+import { Container } from "./styles/Main";
 
 interface Posts {
   id: number;
@@ -25,14 +26,13 @@ function App() {
 
   function handlePost() {
     setLoading(true);
-    setTimeout(() => {
-      setCurrentPage((prev) => prev + 10);
-      setLoading(false);
-    }, 1000);
+    setCurrentPage((prev) => prev + 10);
+    setLoading(false);
   }
 
   return (
-    <>
+    <Container>
+      {!posts && <Loader />}
       <Header />
       <Wrapper>
         {posts.slice(0, currentPage).map((post) => (
@@ -44,16 +44,12 @@ function App() {
             content={post.body}
           />
         ))}
-        <LoadingContainer>
-          {loading ? (
-            <img src={spinnerLoading} alt="" />
-          ) : (
-            <button onClick={handlePost}>Carregar novas postagens</button>
-          )}
-        </LoadingContainer>
+        <FooterContainer>
+          <button onClick={handlePost}>Carregar novas postagens</button>
+        </FooterContainer>
       </Wrapper>
       <GlobalStyle />
-    </>
+    </Container>
   );
 }
 
