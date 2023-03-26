@@ -18,16 +18,13 @@ interface Posts {
 function App() {
   const [posts, setPosts] = useState<Posts[]>([]);
   const [currentPage, setCurrentPage] = useState(10);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     api.get(`posts`).then((response) => setPosts(response.data));
   }, []);
 
   function handlePost() {
-    setLoading(true);
     setCurrentPage((prev) => prev + 10);
-    setLoading(false);
   }
 
   return (

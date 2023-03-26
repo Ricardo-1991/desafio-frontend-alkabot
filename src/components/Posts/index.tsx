@@ -60,7 +60,7 @@ export function Posts({ userId, title, content, postId }: Posts) {
           <Avatar hasBorder={true} />
           <div>
             <strong>{userName ? userName : <Loader />}</strong>
-            <span>Usuário do Blog</span>
+            <span>Usuário do AlkaBlog</span>
           </div>
         </AuthorInfo>
       </header>
